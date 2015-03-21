@@ -1,22 +1,32 @@
-# games-html-proximity
+HTML Proximity
+==============
+*https://github.com/austinpeters/games-html-proximity*
 
-### Description:
-An HTML remake of the flash game Proximity
+## Description:
+This is a HTML remake of the flash game Proximity.
 
-
-### TODO List:
-* Add Game Setup configuration screen
-* Add LANDMASS configuration option
-* Add VICTORY CONDITION option
-* Add ON TAKEOVER options (Neighboring Territories & Enemy Territories)
-* Add player configuration options (Red, Blue, Human, Computer etc)
-* MASSIVELY improve computer opponent capabilities.
-* Clean up JavaScript code a little. Starting to look messy.
-* Change end game 'Game Over' alert to a nicer 'who won' dialog pop up.
-* Add 'computer thinking' notification & screen blocking?
+## Version history
+* _v0.00.01_ - **2015-03-21**: First commit.
+* _v0.00.02_ - **2015-03-21**: Completed TODO item number 7.
 
 
-### Weird odd notes:
+## TODO List:
+1. Add Game Setup configuration screen
+2. Add LANDMASS configuration option
+3. Add VICTORY CONDITION option
+4. Add ON TAKEOVER options (Neighboring Territories & Enemy Territories)
+5. Add player configuration options (Red, Blue, Human, Computer etc)
+6. MASSIVELY improve computer opponent capabilities.
+7. ~~Fix GAMES.Proximity.conquerSpace logic.~~
+ ~~Nearby land should only be conquered if current space soldiers > surrounding space soldiers.~~
+8. Clean up JavaScript code a little. Starting to look messy.
+9. Change end game 'Game Over' alert to a nicer 'who won' dialog pop up.
+10. Add 'computer thinking' notification & screen blocking?
+
+## Code credits:
+1. CSS code for generating the hexagons: http://jtauber.github.io/articles/css-hexagon.html
+
+## Weird odd notes:
 Note on surrounding hex column/row information:
 ```
 [3-5] => {

@@ -112,11 +112,16 @@ GAMES.Proximity.conquerSpace = function($space, team, armySize) {
 	var $nearbyLand = $space.landPiece({
 		action: 'getSurroundingNotAvailable'
 	});
-	$nearbyLand.
-		removeClass('red').
-		removeClass('blue').
-		addClass(team);
-	
+	$nearbyLand.each(function() {
+		$this = $(this);
+		if ($this.data("soldiers") && 
+			$this.data("soldiers") < $space.data("soldiers"))
+		{
+				$this.removeClass('red').
+					removeClass('blue').
+					addClass(team);
+		}
+	});
 	
 };
 
