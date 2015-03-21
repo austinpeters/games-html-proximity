@@ -1,10 +1,22 @@
 # games-html-proximity
+
+### Description:
 An HTML remake of the flash game Proximity
 
 
+### TODO List:
+* Add Game Setup configuration screen
+* Add LANDMASS configuration option
+* Add VICTORY CONDITION option
+* Add ON TAKEOVER options (Neighboring Territories & Enemy Territories)
+* Add player configuration options (Red, Blue, Human, Computer etc)
+* MASSIVELY improve computer opponent capabilities.
+* Clean up JavaScript code a little. Starting to look messy.
+* Change end game 'Game Over' alert to a nicer 'who won' dialog pop up.
+* Add 'computer thinking' notification & screen blocking?
 
 
-
+### Weird odd notes:
 Note on surrounding hex column/row information:
 ```
 [3-5] => {
