@@ -6,6 +6,9 @@ HTML Proximity
 This is a HTML remake of the flash game Proximity.
 
 ## Version history
+* _v0.01.01_ - **2015-03-22**: 
+>1. Completed TODO 3
+
 * _v0.01.00_ - **2015-03-22**: 
 >1. Added TODOs 11-15
 >2. Completed TODO 13
@@ -22,7 +25,7 @@ This is a HTML remake of the flash game Proximity.
 ## TODO List:
 1. ~~Add Game Setup configuration screen~~
 2. ~~Add LANDMASS configuration option~~
-3. Add VICTORY CONDITION option
+3. ~~Add VICTORY CONDITION option~~
 4. Add ON TAKEOVER options (Neighboring Territories & Enemy Territories)
 5. Add player configuration options (Red, Blue, Human, Computer etc)
 6. MASSIVELY improve computer opponent capabilities.

@@ -15,16 +15,23 @@ Array.prototype.next = function() {
 };
 Array.prototype.current = 0;
 
+//Setup selectable option values
 var GAMES = {};
 GAMES.Proximity = {};
 GAMES.Proximity.Options = {};
 GAMES.Proximity.Options.landMass = ['all','most','some'];
 GAMES.Proximity.Options.victoryCondition = ['most land','most soldiers'];
 
+//Setup constants...
 GAMES.Proximity.Constants = {};
 GAMES.Proximity.Constants.highestValue = 20;
 GAMES.Proximity.Constants.cssHexColors = "notconquered red blue";
 
+/*
+*	GAMES.Proximity.rollDice
+*		This function gets a random number
+*		between 1 and constant highestValue.
+*/
 GAMES.Proximity.rollDice = function() {
 	return Math.floor(
 		Math.random() *
@@ -32,12 +39,23 @@ GAMES.Proximity.rollDice = function() {
 	) + 1;
 };
 
+/*
+*	GAMES.Proximity.rollRedDice
+*		This function chooses the Red dice roll and
+*		then displays it on screen for the user to see
+*/
 GAMES.Proximity.rollRedDice = function() {
 	var randDiceRoll = GAMES.Proximity.rollDice();
 	$('#redDiceRoll').text(randDiceRoll);
 	$('#redDiceRoll').data('roll', randDiceRoll);
 };
 
+/*
+*	GAMES.Proximity.updateScores
+*		This function calculates the soldiers and land
+*		values for both Red and Blue teams and then
+*		displays them on screen.
+*/
 GAMES.Proximity.updateScores = function() {
 
 	var $redLand = $('#gameBoard div.hex.red');
@@ -62,6 +80,13 @@ GAMES.Proximity.updateScores = function() {
 	
 };
 
+/*
+*	GAMES.Proximity.drawBoard
+*		Wipes out the contents inside of gameBoard div
+*		and then recreates each hex game space alternating
+*		between even and odd rows. row and column attributes
+*		are applied to each individual hex/game space.
+*/
 GAMES.Proximity.drawBoard = function() {
 	var $gameBoard = $('#gameBoard');
 	$gameBoard.empty();
@@ -90,6 +115,9 @@ GAMES.Proximity.drawBoard = function() {
 
 GAMES.Proximity.setupGame = function(options) {
 
+	//If configFromHTML is true, directly take the
+	//like-named options from the HTML elements and
+	//set the options object variable with them.
 	if (options.configFromHTML) {
 		$('.config-options').each(function() {
 			var $this = $(this);
@@ -133,6 +161,16 @@ GAMES.Proximity.setupGame = function(options) {
 	GAMES.Proximity.updateScores();
 };
 
+/*
+*	GAMES.Proximity.conquerSpace
+*		Sets the specified game space / land ($space) to the
+*		color of the team (team var) conquering it along with
+*		setting data attributes for the space and text to showHelp
+*		number of soldiers on the land space. Near by land spaces
+*		that have already been conquered are discovered, and if
+*		the current spaces soldiers are > than the already conquered
+*		space, that conquered space goes to the new team color.
+*/
 GAMES.Proximity.conquerSpace = function($space, team, armySize) {
 	$space.
 		removeClass(GAMES.Proximity.Constants.cssHexColors).
@@ -180,16 +218,39 @@ GAMES.Proximity.registerLandClicks = function() {
 		
 		GAMES.Proximity.updateScores();
 		
-		//end game...
+		//end game...?
 		if ($availableLand.length <= 1) {
-			//TODO: Update this once victory condition is configurable.
-			var winner = (
-				$('#gameBoard div.hex.red').length >= 
-				$('#gameBoard div.hex.blue').length
-			) ? 'Red' : 'Blue';
+			var winner;
+			var victoryCondition = $('.config-options[config="victoryCondition"]').text();
+			var redCount = {};
+			var blueCount = {};
+			redCount.land = parseInt($('#red-land').text());
+			redCount.soldiers = parseInt($('#red-soldiers').text());
+			blueCount.land = parseInt($('#blue-land').text());
+			blueCount.soldiers = parseInt($('#blue-soldiers').text());
+			
+			if (victoryCondition == "most land") {
+				if (redCount.land > blueCount.land) {
+					winner = 'Red';
+				} else if (blueCount.land > redCount.land) {
+					winner = 'Blue';
+				} else {
+					winner = 'No one. Tie.';
+				}
+			} else {
+				if (redCount.soldiers > blueCount.soldiers) {
+					winner = 'Red';
+				} else if (blueCount.soldiers > redCount.soldiers) {
+					winner = 'Blue';
+				} else {
+					winner = 'No one. Tie.';
+				}
+			}
+			
 			$("#game-winner").text(winner);
 			$('#dialog-game-end').dialog('open');
 			
+		//not end game...
 		} else {
 			GAMES.Proximity.rollRedDice();
 		}
@@ -198,6 +259,12 @@ GAMES.Proximity.registerLandClicks = function() {
 };
 
 
+/*
+*	PAGELOAD:
+*		1. Configure dialog boxes
+*		2. Setup click action for configuration options in game setup dialog box.
+*		3. Pop up game configuration dialog box.
+*/
 $(document).ready(function() {
 
 	$('#dialog-game-end').dialog({
