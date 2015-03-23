@@ -1,57 +1,57 @@
 .red:before {
-    border-bottom: 10px solid red !important;
+    border-bottom: 10px solid red;
 }
 .red {
-	background-color: red !important;
+	background-color: red;
 }
 .red:after {
-    border-top: 10px solid red !important;
+    border-top: 10px solid red;
 }
+
 
 .blue:before {
-    border-bottom: 10px solid blue !important;
+    border-bottom: 10px solid blue;
 }
 .blue {
-	background-color: blue !important;
+	background-color: blue;
 }
 .blue:after {
-    border-top: 10px solid blue !important;
+    border-top: 10px solid blue;
 }
 
-.green:before {
-    border-bottom: 10px solid green !important;
+
+.notgamespace:before {
+    border-bottom: 10px solid white;
 }
-.green {
-	background-color: green !important;
+.notgamespace {
+	background-color: white;
 }
-.green:after {
-    border-top: 10px solid green !important;
+.notgamespace:after {
+    border-top: 10px solid white;
 }
 
-.notused:before {
-    border-bottom: 10px solid white !important;
-	cursor: default !important;
+
+.notconquered:before {
+    border-bottom: 10px solid #EFEFEF;
 }
-.notused {
-	background-color: white !important;
-	cursor: default !important;
+.notconquered {
+	background-color: #EFEFEF;
+	cursor: hand;
 }
-.notused:after {
-    border-top: 10px solid white !important;
-	cursor: default !important;
+.notconquered:after {
+    border-top: 10px solid #EFEFEF;
 }
+
 
 .hex:before {
     content: " ";
 	display: block;
     width: 0; height: 0;
-    border-bottom: 10px solid #EFEFEF;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     position: absolute;
     top: -10px;
 }
-
 .hex {
 	float: left;
     margin-top: 10px;
@@ -60,22 +60,19 @@
     height: 20px;
 	line-height: 20px;
 	text-align: center;
-    background-color: #EFEFEF;
     position: relative;
 	color: white;
-	cursor: hand;
 }
-
 .hex:after {
     content: " ";
 	display: block;
     width: 0;
     position: absolute;
     bottom: -10px;
-    border-top: 10px solid #EFEFEF;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
 }
+
 
 .hex-row {
 	padding-top: 2px;
@@ -86,49 +83,40 @@
     margin-left: 20px;
 }
 
-#text_blue_land {
-	color: blue;
-/*
+
+.container-red-dice-roll {
 	float: left;
-	width: 125px; 
-*/
-}
-#text_blue_soldiers {
-	color: blue;
-/*
-	float: left;
-	padding-right: 125px;
-*/
-}
-#text_red_land {
-	color: red;
-/*
-	float: left;
-	width: 125px; 
-*/
-}
-#text_red_soldiers {
-	color: red;
-/*
-	float: left;
-	padding-right: 125px;
-*/
+	padding-right: 110px;
 }
 
 
-#blue_land {
+.text-bold {
 	font-weight: bold;
-/*	width: 20px; */
 }
-#blue_soldiers {
-	font-weight: bold;
-/*	width: 20px; */
+.text-blue {
+	color: blue;
 }
-#red_land {
-	font-weight: bold;
-/*	width: 20px; */
+.text-red {
+	color: red;
 }
-#red_soldiers {
+
+
+#red-stats {
+	float: left;
+	padding-right: 110px;
+	width: 130px;
+}
+#blue-stats {
+	float: left;
+	width: 130px;
+}
+
+
+#dialog-game-config h2 {
+	font-style: underline;
+	padding-top: 16px;
+}
+.config-options {
+	cursor: hand;
 	font-weight: bold;
-/*	width: 20px; */
 }

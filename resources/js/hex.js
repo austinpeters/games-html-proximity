@@ -1,7 +1,29 @@
+/*
+*
+* I don't like prototyping Array...
+* but I like how much cleaner it can
+* make code feel later on.
+*
+*/
+Array.prototype.next = function() {
+	if (this.current >= (this.length - 1)) {
+		this.current = 0;
+	} else {
+		++this.current;
+	}
+	return this[this.current];
+};
+Array.prototype.current = 0;
+
 var GAMES = {};
 GAMES.Proximity = {};
+GAMES.Proximity.Options = {};
+GAMES.Proximity.Options.landMass = ['all','most','some'];
+GAMES.Proximity.Options.victoryCondition = ['most land','most soldiers'];
+
 GAMES.Proximity.Constants = {};
 GAMES.Proximity.Constants.highestValue = 20;
+GAMES.Proximity.Constants.cssHexColors = "notconquered red blue";
 
 GAMES.Proximity.rollDice = function() {
 	return Math.floor(
@@ -24,59 +46,63 @@ GAMES.Proximity.updateScores = function() {
 	var blueSoldiers = 0;
 
 	// Update red scores	
-	$('#red_land').text($redLand.length);
+	$('#red-land').text($redLand.length);
 	$redLand.each(function() {
 		redSoldiers += $(this).data('soldiers');
 	});
-	$('#red_soldiers').text(redSoldiers);
+	$('#red-soldiers').text(redSoldiers);
 	
 	
 	// Update blue scores	
-	$('#blue_land').text($blueLand.length);
+	$('#blue-land').text($blueLand.length);
 	$blueLand.each(function() {
 		blueSoldiers += $(this).data('soldiers');
 	});
-	$('#blue_soldiers').text(blueSoldiers);
+	$('#blue-soldiers').text(blueSoldiers);
 	
 };
 
 GAMES.Proximity.drawBoard = function() {
 	var $gameBoard = $('#gameBoard');
-	//if the board hasn't already been drawn...draw it.
-	if ($('#gameBoard .hex-row').length < 10) {
-		$gameBoard.empty();
-		var hexRowCss = [
-			'hex-row',
-			'hex-row even'
-		]
-		//draw the container rows...
-		for (var row = 1; row <= 10; row++) {
-			var $newRow = $('<div></div>').
-				addClass(hexRowCss[row % 2]).
-				attr('row', row.toString());
-			$gameBoard.append($newRow);
-			//draw the individual land pieces for the row.
-			for (var column = 1; column <= 12; column++) {
-				var $newLand = $('<div></div>').
-					addClass('hex').
-					attr('row', row.toString()).
-					attr('column', column.toString());
-				$gameBoard.
-					find('div.hex-row[row=' + row.toString() + ']').
-					append($newLand);
-			}
+	$gameBoard.empty();
+	var hexRowCss = [
+		'hex-row',
+		'hex-row even'
+	]
+	//draw the container rows...
+	for (var row = 1; row <= 10; row++) {
+		var $newRow = $('<div></div>').
+			addClass(hexRowCss[row % 2]).
+			attr('row', row.toString());
+		$gameBoard.append($newRow);
+		//draw the individual land pieces for the row.
+		for (var column = 1; column <= 12; column++) {
+			var $newLand = $('<div></div>').
+				addClass('hex').
+				attr('row', row.toString()).
+				attr('column', column.toString());
+			$gameBoard.
+				find('div.hex-row[row=' + row.toString() + ']').
+				append($newLand);
 		}
 	}
 }
 
 GAMES.Proximity.setupGame = function(options) {
 
+	if (options.configFromHTML) {
+		$('.config-options').each(function() {
+			var $this = $(this);
+			options[$this.attr('config')] = $this.text();
+		});
+	}
+
 	GAMES.Proximity.drawBoard();
 	//reset scores.
-	$('#blue_soldiers').data('count', 0);
-	$('#blue_land').data('count', 0);
-	$('#red_soldiers').data('count', 0);
-	$('#red_land').data('count', 0);
+	$('#blue-soldiers').data('count', 0);
+	$('#blue-land').data('count', 0);
+	$('#red-soldiers').data('count', 0);
+	$('#red-land').data('count', 0);
 	
 	var landMass = {};
 	landMass['all'] = 1;
@@ -86,16 +112,19 @@ GAMES.Proximity.setupGame = function(options) {
 	//reset each hexagon land piece.
 	$('#gameBoard .hex').each(function() {
 		var $this = $(this);
-		$this.removeClass('blue red');
-		$this.data("", 0);
+		$this.
+			removeClass(GAMES.Proximity.Constants.cssHexColors).
+			data("soldiers", 0).
+			text("");
 		
 		var randNumber = GAMES.Proximity.rollDice();
 		
 		//randomize available spaces on the board.
 		if (randNumber >= landMass[options.landMass]) {
 			$this.attr('available', "true");
+			$this.addClass('notconquered');
 		} else {
-			$this.addClass('notused');
+			$this.addClass('notgamespace');
 			$this.attr('available', "false");
 		}
 	});
@@ -105,10 +134,12 @@ GAMES.Proximity.setupGame = function(options) {
 };
 
 GAMES.Proximity.conquerSpace = function($space, team, armySize) {
-	$space.addClass(team);
-	$space.text(armySize);
-	$space.data("soldiers", armySize);
-	$space.attr("available", "false");
+	$space.
+		removeClass(GAMES.Proximity.Constants.cssHexColors).
+		addClass(team).
+		text(armySize).
+		data("soldiers", armySize).
+		attr("available", "false");
 	var $nearbyLand = $space.landPiece({
 		action: 'getSurroundingNotAvailable'
 	});
@@ -117,8 +148,8 @@ GAMES.Proximity.conquerSpace = function($space, team, armySize) {
 		if ($this.data("soldiers") && 
 			$this.data("soldiers") < $space.data("soldiers"))
 		{
-				$this.removeClass('red').
-					removeClass('blue').
+				$this.
+					removeClass(GAMES.Proximity.Constants.cssHexColors).
 					addClass(team);
 		}
 	});
@@ -127,7 +158,7 @@ GAMES.Proximity.conquerSpace = function($space, team, armySize) {
 
 GAMES.Proximity.registerLandClicks = function() {
 	$('.hex').click(function() {
-		$this = $(this);
+		var $this = $(this);
 		
 		//don't let them click on spaces they're not supposed to...
 		if ($this.attr('available') == "false") {
@@ -149,8 +180,16 @@ GAMES.Proximity.registerLandClicks = function() {
 		
 		GAMES.Proximity.updateScores();
 		
+		//end game...
 		if ($availableLand.length <= 1) {
-			alert('Game over!');
+			//TODO: Update this once victory condition is configurable.
+			var winner = (
+				$('#gameBoard div.hex.red').length >= 
+				$('#gameBoard div.hex.blue').length
+			) ? 'Red' : 'Blue';
+			$("#game-winner").text(winner);
+			$('#dialog-game-end').dialog('open');
+			
 		} else {
 			GAMES.Proximity.rollRedDice();
 		}
@@ -161,9 +200,35 @@ GAMES.Proximity.registerLandClicks = function() {
 
 $(document).ready(function() {
 
-	GAMES.Proximity.setupGame({
-		'landMass': 'most'
+	$('#dialog-game-end').dialog({
+		modal: true,
+		closeText: "Play!",
+		autoOpen: false,
+		close: function() {
+			$('#dialog-game-config').dialog('open');
+		}
 	});
-	GAMES.Proximity.registerLandClicks();
+
+	$('.config-options').on('click', function() {
+		var $this = $(this);
+		$this.text(
+			GAMES.
+			Proximity.
+			Options[
+				$this.attr('config')
+			].next()
+		);
+	});
+
+	$('#dialog-game-config').dialog({
+		modal: true,
+		closeText: "Play!",
+		close: function() {
+			GAMES.Proximity.setupGame({
+				'configFromHTML': true
+			});
+			GAMES.Proximity.registerLandClicks();
+		}
+	});
 	
 });
