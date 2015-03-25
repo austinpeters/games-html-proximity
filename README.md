@@ -32,7 +32,7 @@ This is a HTML remake of the flash game Proximity.
 3. ~~Add VICTORY CONDITION option~~
 4. Add ON TAKEOVER options (Neighboring Territories & Enemy Territories)
 5. Add player configuration options (Red, Blue, Human, Computer etc)
-6. MASSIVELY improve computer opponent capabilities.
+6. Add computer difficulty options. Currently computer 'AI' is random picking.
 7. ~~Fix GAMES.Proximity.conquerSpace logic.~~
  ~~Nearby land should only be conquered if current space soldiers > surrounding space soldiers.~~
 8. Clean up JavaScript code a little. Starting to look messy.
