@@ -117,6 +117,10 @@
 	padding-top: 16px;
 }
 .config-options {
-	cursor: hand;
+	cursor: pointer;
 	font-weight: bold;
+}
+
+.no-display {
+	display: none;
 }

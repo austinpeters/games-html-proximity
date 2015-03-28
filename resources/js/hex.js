@@ -20,11 +20,14 @@ var GAMES = {};
 GAMES.Proximity = {};
 GAMES.Proximity.Options = {};
 GAMES.Proximity.Options.landMass = ['all','most','some'];
+GAMES.Proximity.Options.neighborTerritories = ['no change','strengthen','weaken'];
+GAMES.Proximity.Options.enemyTerritories = ['no change','strengthen','weaken'];
 GAMES.Proximity.Options.victoryCondition = ['most land','most soldiers'];
 
 //Setup constants...
 GAMES.Proximity.Constants = {};
 GAMES.Proximity.Constants.highestValue = 20;
+GAMES.Proximity.Constants.teamColors = ["red", "blue"];
 GAMES.Proximity.Constants.cssHexColors = "notconquered red blue";
 
 /*
@@ -181,14 +184,40 @@ GAMES.Proximity.conquerSpace = function($space, team, armySize) {
 	var $nearbyLand = $space.landPiece({
 		action: 'getSurroundingNotAvailable'
 	});
+	var otherTeam = (GAMES.Proximity.Constants.teamColors[0] == team) ?
+		GAMES.Proximity.Constants.teamColors[1] : GAMES.Proximity.Constants.teamColors[0];
+	var neighborTerritories = $('.config-options[config="neighborTerritories"]').text();
+	var enemyTerritories = $('.config-options[config="enemyTerritories"]').text();
+	
+	//loop through each neighboring space.
 	$nearbyLand.each(function() {
 		$this = $(this);
+		//if neighboring take over settings have changed, and this space is the current teams...
+		if ($this.hasClass(team) && neighborTerritories !== "no change") {
+			//if weaken, -1. else +1.
+			var unitChange = (neighborTerritories == "weaken") ? -1 : 1;
+			var newCount = $this.data("soldiers") + unitChange;
+			$this.
+				text(newCount).
+				data("soldiers", newCount);
+		}
+		
 		if ($this.data("soldiers") && 
 			$this.data("soldiers") < $space.data("soldiers"))
 		{
+			//if enemy take over settings have changed, and this space is the other teams space...
+			if ($this.hasClass(otherTeam) && enemyTerritories !== "no change") {
+				//if weaken, -1. else +1.
+				var unitChange = (enemyTerritories == "weaken") ? -1 : 1;
+				var newCount = $this.data("soldiers") + unitChange;
 				$this.
-					removeClass(GAMES.Proximity.Constants.cssHexColors).
-					addClass(team);
+					text(newCount).
+					data("soldiers", newCount);
+			}
+			
+			$this.
+				removeClass(GAMES.Proximity.Constants.cssHexColors).
+				addClass(team);
 		}
 	});
 	
