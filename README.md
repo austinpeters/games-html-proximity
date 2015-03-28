@@ -6,7 +6,7 @@ HTML Proximity
 This is a HTML remake of the flash game Proximity.
 
 ## Version history
-* _v0.02.00 - **2015-03-28**:
+* _v0.02.00_ - **2015-03-28**:
 >1. Added TODO 4.
 >2. Decided against adding TODO number 10.
 >3. Formatted this README a little more.
