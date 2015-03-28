@@ -6,10 +6,11 @@ HTML Proximity
 This is a HTML remake of the flash game Proximity.
 
 ## Version history
-* _v0.02.00 - **2015-03-28**:
+* _v0.02.00_ - **2015-03-28**:
 >1. Added TODO 4.
 >2. Decided against adding TODO number 10.
 >3. Formatted this README a little more.
+>4. Basically completed TODO 11.
 
 * _v0.01.02_ - **2015-03-25**:
 >1. Added HTML tag to force IE to render with latest version.
@@ -45,7 +46,7 @@ This is a HTML remake of the flash game Proximity.
 8. Clean up JavaScript code a little. Starting to look messy.
 9. ~~Change end game 'Game Over' alert to a nicer 'who won' dialog pop up.~~
 10. ~~Add 'computer thinking' notification & screen blocking?~~
-11. Clean up the ~~inline styles~~ & abusive br tags.
+11. ~~Clean up the inline styles & abusive br tags.~~
 12. Add code commenting.
 13. ~~Clean up the use of !important css declarations.~~
 14. Massively improve disgusting styling/theme issues. Dialog boxes look terrible.
